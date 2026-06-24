@@ -107,15 +107,21 @@
 
   /* Weekly meter */
   .weekly-bar {
-    background:var(--card);border:0.5px solid var(--border);border-radius:12px;
-    padding:18px 24px;display:flex;align-items:center;gap:14px;
+    background:var(--card);border:0.5px solid var(--border);border-radius:14px;
+    padding:20px 28px;display:grid;
+    grid-template-rows: auto auto auto;
+    gap:12px;
   }
-  .weekly-label { font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);white-space:nowrap;flex-shrink:0;font-weight:500; }
-  .weekly-nums  { font-family:'Bebas Neue',sans-serif;font-size:36px;white-space:nowrap;flex-shrink:0; }
-  .weekly-track { flex:1;height:18px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden; }
+  .weekly-top { display:flex;justify-content:space-between;align-items:flex-end; }
+  .weekly-label { font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:500;margin-bottom:4px; }
+  .weekly-nums  { font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:1;color:var(--gold); }
+  .weekly-nums span.goal { font-size:28px;color:var(--dim); }
+  .weekly-lw-block { text-align:right; }
+  .weekly-lw-label { font-size:12px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px; }
+  .weekly-lw-num { font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:1;color:rgba(255,255,255,0.5); }
+  .weekly-track { width:100%;height:20px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden; }
   .weekly-fill  { height:100%;border-radius:20px;background:var(--gold);transition:width 0.8s ease; }
-  .weekly-goal  { font-size:11px;color:var(--dim);white-space:nowrap;flex-shrink:0; }
-  .weekly-lw    { font-size:11px;color:var(--dim);white-space:nowrap;flex-shrink:0; }
+  .weekly-bottom { display:flex;justify-content:space-between;font-size:12px;color:var(--dim); }
 
   /* Footer */
   .footer { display:flex;justify-content:space-between;align-items:center; }
@@ -230,12 +236,22 @@
   </div>
 
   <!-- Weekly meter -->
+ <!-- Weekly meter -->
   <div class="weekly-bar">
-    <div class="weekly-label">Weekly calls</div>
-    <div class="weekly-nums c-gold"><span id="wk-calls">—</span><span style="font-size:14px;color:var(--dim);"> / 400</span></div>
+    <div class="weekly-top">
+      <div>
+        <div class="weekly-label">This week's calls</div>
+        <div class="weekly-nums"><span id="wk-calls">—</span><span class="goal"> / 400</span></div>
+      </div>
+      <div class="weekly-lw-block">
+        <div class="weekly-lw-label">Last week</div>
+        <div class="weekly-lw-num" id="lw-calls">—</div>
+      </div>
+    </div>
     <div class="weekly-track"><div class="weekly-fill" id="wk-bar" style="width:0%"></div></div>
-    <div class="weekly-goal" id="wk-pct">0% of goal</div>
-    <div class="weekly-lw">Last week: <span id="lw-calls" style="color:rgba(255,255,255,0.6);">—</span></div>
+    <div class="weekly-bottom">
+      <span>0</span><span id="wk-pct">0% of goal</span><span>400</span>
+    </div>
   </div>
 
   <!-- Footer -->
