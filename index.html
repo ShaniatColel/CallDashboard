@@ -29,110 +29,109 @@
     100%{ transform:translateY(-110px) rotate(18deg); opacity:0; }
   }
 
-  #bbq-wrap { position:fixed;bottom:19%;right:5%;z-index:3;width:110px; }
-  #umbrella  { position:fixed;bottom:19%;left:5%;z-index:3;width:140px; }
+  #bbq-wrap { position:fixed;bottom:10%;right:5%;z-index:3;width:110px; }
+  #umbrella  { position:fixed;bottom:10%;left:5%;z-index:3;width:140px; }
   .smoke-p { position:fixed;border-radius:50%;background:rgba(220,220,220,0.13);animation:smokeRise linear forwards;pointer-events:none;z-index:2; }
   @keyframes smokeRise { 0%{transform:translateY(0) scale(1);opacity:0.3;} 100%{transform:translateY(-80px) scale(3);opacity:0;} }
 
-  /* בס"ד — top left, away from clock */
-  #bsd { position:fixed;top:14px;left:20px;font-size:15px;color:rgba(255,255,255,0.55);font-family:serif;z-index:20;letter-spacing:0.05em; }
+  #bsd { position:fixed;top:14px;right:20px;font-size:15px;color:rgba(255,255,255,0.55);font-family:serif;z-index:20;letter-spacing:0.05em; }
 
   /* ── UI layout ── */
   #ui {
     position:relative;z-index:10;height:100vh;
     display:grid;
-    grid-template-rows: auto auto 1fr 220px auto;
-    padding:14px 24px 10px;
-    gap:9px;
+    grid-template-rows: auto auto 1fr 1fr auto;
+    padding:12px 22px 8px;
+    gap:8px;
   }
 
-  /* Header — clock on right, title centred */
+  /* Header */
   .hdr { display:flex;justify-content:center;align-items:center;position:relative; }
   .hdr-center { text-align:center; }
-  .hdr-center h1 { font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:0.08em;line-height:1;color:var(--teal); }
-  .hdr-center p  { font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:0.04em; }
-  #clock { position:absolute;right:0;top:0;font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:0.05em;color:rgba(255,255,255,0.7); }
+  .hdr-center h1 { font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:0.08em;line-height:1;color:var(--teal); }
+  .hdr-center p  { font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:0.04em; }
+  #clock { position:absolute;right:0;top:0;font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:0.05em;color:rgba(255,255,255,0.7);margin-right:80px; }
 
   /* Top stat strip */
-  .stat-strip { display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px; }
-  .stat { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:11px 16px; }
-  .stat-label { font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:4px;font-weight:500; }
-  .stat-val   { font-family:'Bebas Neue',sans-serif;font-size:46px;line-height:1; }
-  .stat-sub   { font-size:11px;color:var(--dim);margin-top:3px; }
-  .c-gold   { color:var(--gold); }
-  .c-teal   { color:var(--teal); }
-  .c-purple { color:var(--purple); }
+  .stat-strip { display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px; }
+  .stat { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:10px 14px; }
+  .stat-label { font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:3px;font-weight:500; }
+  .stat-val   { font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1; }
+  .stat-sub   { font-size:10px;color:var(--dim);margin-top:2px; }
+  .c-gold{color:var(--gold);} .c-teal{color:var(--teal);} .c-purple{color:var(--purple);}
 
-  /* countdown cards in stat strip */
-  .cd-card { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:11px 16px;display:flex;align-items:center;justify-content:space-between; }
-  .cd-label { font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);font-weight:500; }
-  .cd-date  { font-size:11px;color:var(--dim);margin-top:2px; }
-  .cd-time  { font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.04em; }
+  .cd-card { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between; }
+  .cd-label { font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);font-weight:500; }
+  .cd-date  { font-size:10px;color:var(--dim);margin-top:2px; }
+  .cd-time  { font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:0.04em; }
 
-  /* Main 3-col */
-  .main { display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:9px;min-height:0; }
+  /* Main 3-col — smaller to give room to weekly */
+  .main { display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:8px;min-height:0; }
   .card {
     background:var(--card);border:0.5px solid var(--border);border-radius:14px;
-    padding:14px 17px;display:flex;flex-direction:column;min-height:0;
+    padding:12px 15px;display:flex;flex-direction:column;min-height:0;
     backdrop-filter:blur(3px);
   }
-  .card-title { font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:500; }
-  .dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
-
-  .big-num { font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1; }
+  .card-title { font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px;font-weight:500; }
+  .dot { width:7px;height:7px;border-radius:50%;flex-shrink:0; }
+  .big-num { font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1; }
 
   .goal-pill {
-    display:inline-block;font-size:13px;font-weight:500;
-    padding:4px 12px;border-radius:20px;margin-bottom:9px;
+    display:inline-block;font-size:12px;font-weight:500;
+    padding:3px 10px;border-radius:20px;margin-bottom:7px;
     letter-spacing:0.03em;
   }
   .goal-pill-teal   { background:rgba(61,217,164,0.2);color:var(--teal);border:0.5px solid rgba(61,217,164,0.5); }
   .goal-pill-purple { background:rgba(155,143,245,0.2);color:var(--purple);border:0.5px solid rgba(155,143,245,0.5); }
 
-  .prog-track { height:9px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;margin:7px 0 5px; }
+  .prog-track { height:7px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;margin:5px 0 4px; }
   .prog-fill  { height:100%;border-radius:20px;min-width:4px;transition:width 0.8s ease; }
-  .prog-labels{ display:flex;justify-content:space-between;font-size:11px;color:var(--dim); }
+  .prog-labels{ display:flex;justify-content:space-between;font-size:10px;color:var(--dim); }
 
-  .rep-row { display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid rgba(255,255,255,0.08);font-size:13px; }
+  .rep-row { display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:0.5px solid rgba(255,255,255,0.07);font-size:12px; }
   .rep-row:last-child { border-bottom:none; }
 
-  /* Leaderboard */
-  .lb-grid { display:grid;grid-template-columns:24px 1fr 50px 50px 62px;gap:6px;align-items:center; }
-  .lb-hdr  { font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--dim);padding-bottom:7px;border-bottom:0.5px solid var(--border); }
-  .lb-row  { padding:6px 0;border-bottom:0.5px solid rgba(255,255,255,0.06);font-size:13px; }
+  .lb-grid { display:grid;grid-template-columns:22px 1fr 46px 46px 56px;gap:5px;align-items:center; }
+  .lb-hdr  { font-size:9px;text-transform:uppercase;letter-spacing:0.07em;color:var(--dim);padding-bottom:5px;border-bottom:0.5px solid var(--border); }
+  .lb-row  { padding:4px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);font-size:12px; }
   .lb-row:last-child { border-bottom:none; }
-  .lb-rank { text-align:center;font-size:14px;color:var(--dim); }
+  .lb-rank { text-align:center;font-size:12px;color:var(--dim); }
   .lb-name { white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff; }
   .lb-num  { text-align:right;font-variant-numeric:tabular-nums;color:var(--dim); }
 
-  /* Weekly meter */
- .weekly-bar {
-    background:var(--card);border:1px solid var(--border);border-radius:14px;
-    padding:28px 36px;display:grid;
+  /* ── Weekly — BIG FOCUS ── */
+  .weekly-bar {
+    background:var(--card);
+    border:1px solid rgba(245,200,66,0.3);
+    border-radius:16px;
+    padding:22px 36px;
+    display:grid;
     grid-template-rows: auto auto auto;
-    gap:12px; box-shadow: 0 0 30px rgba(245,200,66,.15);
-    min-height:0; overflow:hidden;
+    gap:14px;
+    box-shadow:0 0 40px rgba(245,200,66,0.12);
+    min-height:0;
+    overflow:hidden;
   }
-  .weekly-top { display:flex;justify-content:space-between;align-items:flex-end; }
-  .weekly-label { font-size:18px;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);font-weight:600;margin-bottom:4px; }
-  .weekly-nums  { font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1;color:var(--gold); }
-  .weekly-nums span.goal { font-size:28px;color:var(--dim); }
-  .weekly-lw-block { text-align:right; }
-  .weekly-lw-label { font-size:16px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px; }
-  .weekly-lw-num { font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:1;color:rgba(255,255,255,0.5); }
-  .weekly-track { width:100%;height:34px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden; }
+  .weekly-top { display:flex;justify-content:space-between;align-items:center; }
+  .weekly-left {}
+  .weekly-label { font-size:16px;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);font-weight:600;margin-bottom:2px; }
+  .weekly-nums { font-family:'Bebas Neue',sans-serif;font-size:90px;line-height:0.9;color:var(--gold); }
+  .weekly-nums .goal { font-size:32px;color:var(--dim); }
+  .weekly-right { text-align:right; }
+  .weekly-lw-label { font-size:14px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:2px; }
+  .weekly-lw-num { font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:0.9;color:rgba(255,255,255,0.45); }
+  .weekly-track { width:100%;height:28px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden; }
   .weekly-fill  { height:100%;border-radius:20px;background:var(--gold);transition:width 0.8s ease; }
-  .weekly-bottom { display:flex;justify-content:space-between;font-size:16px;font-weight:500;color:var(--dim); }
+  .weekly-bottom { display:flex;justify-content:space-between;font-size:14px;font-weight:500;color:var(--dim); }
 
   /* Footer */
   .footer { display:flex;justify-content:space-between;align-items:center; }
-  #updated { font-size:11px;color:var(--dim);font-style:italic; }
-  #ticker  { font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.05em;font-style:italic; }
+  #updated { font-size:10px;color:var(--dim);font-style:italic; }
+  #ticker  { font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:0.05em;font-style:italic; }
 </style>
 </head>
 <body>
 
-<!-- בס"ד top LEFT to avoid clock overlap -->
 <div id="bsd">בס״ד</div>
 
 <div id="scene">
@@ -172,7 +171,6 @@
 </div>
 
 <div id="ui">
-  <!-- Header: בס"ד top-left (fixed), title center, clock right -->
   <div class="hdr">
     <div class="hdr-center">
       <h1>DRS Call Blitz 2026</h1>
@@ -181,7 +179,6 @@
     <div id="clock"></div>
   </div>
 
-  <!-- Stat strip: calls + 2 countdowns -->
   <div class="stat-strip">
     <div class="stat">
       <div class="stat-label">Calls today</div>
@@ -204,7 +201,6 @@
     </div>
   </div>
 
-  <!-- Main panels -->
   <div class="main">
     <div class="card">
       <div class="card-title"><div class="dot" style="background:var(--teal)"></div>5T26 — Five Towns 2026</div>
@@ -212,7 +208,7 @@
       <div class="goal-pill goal-pill-teal" id="goal-5t-pill">Goal: 150 · 0% there</div>
       <div class="prog-track"><div class="prog-fill" id="bar-5t" style="background:var(--teal);width:0%"></div></div>
       <div class="prog-labels"><span>0</span><span id="pct-5t-lbl"></span><span>150</span></div>
-      <div style="margin-top:10px;flex:1;" id="rsvp-5t-rows"></div>
+      <div style="margin-top:8px;flex:1;" id="rsvp-5t-rows"></div>
     </div>
 
     <div class="card">
@@ -221,7 +217,7 @@
       <div class="goal-pill goal-pill-purple" id="goal-nj-pill">Goal: 150 · 0% there</div>
       <div class="prog-track"><div class="prog-fill" id="bar-nj" style="background:var(--purple);width:0%"></div></div>
       <div class="prog-labels"><span>0</span><span id="pct-nj-lbl"></span><span>150</span></div>
-      <div style="margin-top:10px;flex:1;" id="rsvp-nj-rows"></div>
+      <div style="margin-top:8px;flex:1;" id="rsvp-nj-rows"></div>
     </div>
 
     <div class="card">
@@ -236,28 +232,26 @@
     </div>
   </div>
 
-  <!-- Weekly meter -->
- <!-- Weekly meter -->
+  <!-- Weekly — big focus -->
   <div class="weekly-bar">
     <div class="weekly-top">
-      <div>
+      <div class="weekly-left">
         <div class="weekly-label">This week's calls</div>
         <div class="weekly-nums"><span id="wk-calls">—</span><span class="goal"> / 400</span></div>
       </div>
-      <div class="weekly-lw-block">
+      <div class="weekly-right">
         <div class="weekly-lw-label">Last week</div>
         <div class="weekly-lw-num" id="lw-calls">—</div>
       </div>
     </div>
     <div class="weekly-track"><div class="weekly-fill" id="wk-bar" style="width:0%"></div></div>
     <div class="weekly-bottom">
-      <span>0</span><span id="wk-pct">0% of goal</span><span>400</span>
+      <span>0</span><span id="wk-pct">0% of weekly goal</span><span>400</span>
     </div>
   </div>
 
-  <!-- Footer -->
   <div class="footer">
-    <div id="updated" style="font-size:11px;color:var(--dim);font-style:italic;">loading...</div>
+    <div id="updated">loading...</div>
     <div id="ticker"></div>
   </div>
 </div>
@@ -316,7 +310,7 @@ function applyData(d) {
   const rows5t = d.leaderboard.filter(r=>r.ft>0);
   document.getElementById('rsvp-5t-rows').innerHTML = rows5t.length
     ? rows5t.map((r,i)=>`<div class="rep-row"><span>${medals[i]||'·'} ${r.name}</span><span style="color:var(--teal);font-weight:500;">${r.ft}</span></div>`).join('')
-    : `<div style="font-size:13px;color:var(--dim);font-style:italic;padding-top:8px;">First RSVP up for grabs ⚡</div>`;
+    : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">First RSVP up for grabs ⚡</div>`;
 
   const pctN = Math.min(100, d.pct_nj);
   document.getElementById('c-nj').textContent = d.total_nj;
@@ -327,7 +321,7 @@ function applyData(d) {
   const rowsNj = d.leaderboard.filter(r=>r.nj>0);
   document.getElementById('rsvp-nj-rows').innerHTML = rowsNj.length
     ? rowsNj.map((r,i)=>`<div class="rep-row"><span>${medals[i]||'·'} ${r.name}</span><span style="color:var(--purple);font-weight:500;">${r.nj}</span></div>`).join('')
-    : `<div style="font-size:13px;color:var(--dim);font-style:italic;padding-top:8px;">Someone make history today ⚡</div>`;
+    : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">Someone make history today ⚡</div>`;
 
   document.getElementById('lb-body').innerHTML = d.leaderboard.slice(0,8).map((r,i)=>`
     <div class="lb-grid lb-row">
@@ -342,8 +336,7 @@ function applyData(d) {
   document.getElementById('lw-calls').textContent = d.calls_lw;
   const wkPct = Math.min(100, d.calls_wk_pct);
   document.getElementById('wk-bar').style.width = wkPct + '%';
-  document.getElementById('wk-pct').textContent = wkPct.toFixed(1) + '% of goal';
-
+  document.getElementById('wk-pct').textContent = wkPct.toFixed(1) + '% of weekly goal';
   document.getElementById('updated').textContent = 'Last updated: ' + d.updated;
 }
 
@@ -377,7 +370,6 @@ function drawSky(){
     ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
     ctx.fillStyle=`rgba(255,255,255,${a})`; ctx.fill();
   }
-  // moon — far right, well clear of cards
   ctx.beginPath(); ctx.arc(skyC.width*0.93, skyC.height*0.1, 26, 0, Math.PI*2);
   ctx.fillStyle='rgba(255,245,200,0.9)'; ctx.fill();
   ctx.beginPath(); ctx.arc(skyC.width*0.93+9, skyC.height*0.1-5, 22, 0, Math.PI*2);
@@ -387,7 +379,7 @@ drawSky(); window.addEventListener('resize',drawSky);
 
 // ── Ocean ──
 const oc=document.getElementById('ocean'), octx=oc.getContext('2d');
-function resizeOc(){ oc.width=window.innerWidth; oc.height=window.innerHeight*0.42; }
+function resizeOc(){ oc.width=window.innerWidth; oc.height=window.innerHeight*0.3; }
 resizeOc(); window.addEventListener('resize',resizeOc);
 let wt=0;
 const wl=[
@@ -421,17 +413,17 @@ drawOcean();
 // ── Beach ──
 const bc=document.getElementById('beach');
 function drawBeach(){
-  bc.width=window.innerWidth; bc.height=window.innerHeight*0.22;
+  bc.width=window.innerWidth; bc.height=window.innerHeight*0.12;
   const ctx=bc.getContext('2d');
   const g=ctx.createLinearGradient(0,0,0,bc.height);
   g.addColorStop(0,'rgba(240,210,140,0.95)'); g.addColorStop(1,'rgba(210,175,100,1)');
   ctx.fillStyle=g;
   ctx.beginPath(); ctx.moveTo(0,bc.height*0.15);
-  for(let x=0;x<=bc.width;x+=4) ctx.lineTo(x,bc.height*0.15+Math.sin(x*0.02)*6);
+  for(let x=0;x<=bc.width;x+=4) ctx.lineTo(x,bc.height*0.15+Math.sin(x*0.02)*4);
   ctx.lineTo(bc.width,bc.height); ctx.lineTo(0,bc.height); ctx.closePath(); ctx.fill();
-  for(let i=0;i<18;i++){
+  for(let i=0;i<14;i++){
     const sx=Math.random()*bc.width, sy=bc.height*0.3+Math.random()*bc.height*0.55;
-    ctx.beginPath(); ctx.ellipse(sx,sy,4,2.5,Math.random()*Math.PI,0,Math.PI*2);
+    ctx.beginPath(); ctx.ellipse(sx,sy,3,2,Math.random()*Math.PI,0,Math.PI*2);
     ctx.fillStyle=`rgba(255,235,200,${0.5+Math.random()*0.4})`; ctx.fill();
   }
 }
@@ -448,12 +440,12 @@ function spawnFloater(){
   const isH=heb.includes(sym);
   const sz=isH?(16+Math.random()*18):(14+Math.random()*20);
   const color=cols[Math.floor(Math.random()*cols.length)];
-  const x=5+Math.random()*90, y=20+Math.random()*65, dur=4+Math.random()*5;
+  const x=5+Math.random()*90, y=2+Math.random()*90, dur=4+Math.random()*5;
   el.textContent=sym;
   el.style.cssText=`left:${x}vw;top:${y}vh;font-size:${sz}px;color:${color};font-family:${isH?'serif':'sans-serif'};animation-duration:${dur}s;`;
   document.body.appendChild(el); setTimeout(()=>el.remove(),dur*1000);
 }
-setInterval(spawnFloater,650);
+setInterval(spawnFloater,200);
 
 // ── BBQ smoke ──
 const bbqEl=document.getElementById('bbq-wrap');
