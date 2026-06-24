@@ -330,20 +330,17 @@ function applyData(d) {
   document.getElementById('updated').textContent = 'Last updated: ' + d.updated;
 }
 
+const SHEET_URL = 'PASTE_PUBLISHED_CSV_URL_HERE';
+
 async function fetchData() {
   try {
-    const url = 'https://script.google.com/macros/s/AKfycbxUlp3xZbrgrZ48mAbsj2G6N26IofP8tZNfWT8wjvF1WnxuGTO_fK2Ly4dbbYH3QR5kqA/exec' + '?callback=handleData&t=' + Date.now();
-    const script = document.createElement('script');
-    script.src = url;
-    document.body.appendChild(script);
-    setTimeout(() => script.remove(), 5000);
+    const res = await fetch(SHEET_URL + '&t=' + Date.now());
+    const text = await res.text();
+    const d = JSON.parse(text.split('\n')[0].replace(/^"|"$/g, '').replace(/""/g, '"'));
+    if (d && d.updated) applyData(d);
   } catch(e) {
-    document.getElementById('updated').textContent = 'Waiting for data...';
+    document.getElementById('updated').textContent = 'Connection error — retrying...';
   }
-}
-
-function handleData(d) {
-  applyData(d);
 }
 fetchData(); setInterval(fetchData, 60000);
 
