@@ -323,7 +323,8 @@ function applyData(d) {
     : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">Someone make history today ⚡</div>`;
 
  // Sort by calls only for leaderboard
-  const bycalls = [...d.leaderboard].sort((a,b) => b.calls - a.calls);
+ const excluded = ['Unowned', 'Efraim Duchman', 'Rabbi Sholom Duchman'];
+  const bycalls = [...d.leaderboard].filter(r => !excluded.includes(r.name)).sort((a,b) => b.calls - a.calls);
   document.getElementById('lb-body').innerHTML = bycalls.map((r,i)=>`
     <div class="lb-grid lb-row">
       <div class="lb-rank">${medals[i]||i+1}</div>
