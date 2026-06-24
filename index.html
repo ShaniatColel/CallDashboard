@@ -332,7 +332,7 @@ function applyData(d) {
 
 async function fetchData() {
   try {
-    const url = DATA_URL + '?callback=handleData&t=' + Date.now();
+    const url = 'https://script.google.com/a/macros/colelchabad.org/s/AKfycbxN3Iij60WYNQyebq7FO0vrBUaG5znk7iA7YLF_qwwFhG_WNaaFBffSwz2k31KUqJq8oQ/exec' + '?callback=handleData&t=' + Date.now();
     const script = document.createElement('script');
     script.src = url;
     document.body.appendChild(script);
