@@ -323,7 +323,7 @@ function applyData(d) {
     ? rowsNj.map((r,i)=>`<div class="rep-row"><span>${medals[i]||'·'} ${r.name}</span><span style="color:var(--purple);font-weight:500;">${r.nj}</span></div>`).join('')
     : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">Someone make history today ⚡</div>`;
 
-  document.getElementById('lb-body').innerHTML = d.leaderboard.slice(0,8).map((r,i)=>`
+  document.getElementById('lb-body').innerHTML = d.leaderboard.slice(0,12).map((r,i)=>`
     <div class="lb-grid lb-row">
       <div class="lb-rank">${medals[i]||i+1}</div>
       <div class="lb-name">${r.name}</div>
@@ -340,7 +340,7 @@ function applyData(d) {
   document.getElementById('updated').textContent = 'Last updated: ' + d.updated;
 }
 
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRGoEcbBe8s8kjnBz_naT72wPXnWt6AaExbFeQvuNUTVTwbpW-Aedk8paw_90YtZqe-LZmXmQHFmSY/pub?output=csv';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxUlp3xZbrgrZ48mAbsj2G6N26IofP8tZNfWT8wjvF1WnxuGTO_fK2Ly4dbbYH3QR5kqA/exec/pub?output=csv';
 
 async function fetchData() {
   try {
