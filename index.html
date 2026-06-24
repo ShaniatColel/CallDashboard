@@ -55,17 +55,17 @@
   /* Top stat strip */
   .stat-strip { display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px; }
   .stat { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:10px 14px; }
-  .stat-label { font-size:20px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:3px;font-weight:500; }
-  .stat-val   { font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1; }
-  .stat-sub   { font-size:10px;color:var(--dim);margin-top:2px; }
+  .stat-label { font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:3px;font-weight:600; }
+  .stat-val   { font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1; }
+  .stat-sub   { font-size:11px;color:var(--dim);margin-top:2px; }
   .c-gold{color:var(--gold);} .c-teal{color:var(--teal);} .c-purple{color:var(--purple);}
 
   .cd-card { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between; }
-  .cd-label { font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);font-weight:500; }
-  .cd-date  { font-size:10px;color:var(--dim);margin-top:2px; }
-  .cd-time  { font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:0.04em; }
+  .cd-label { font-size:13px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);font-weight:600; }
+  .cd-date  { font-size:11px;color:var(--dim);margin-top:2px; }
+  .cd-time  { font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:0.04em; }
 
-  /* Main 3-col — smaller to give room to weekly */
+  /* Main 3-col */
   .main { display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:8px;min-height:0; }
   .card {
     background:var(--card);border:0.5px solid var(--border);border-radius:14px;
@@ -91,7 +91,7 @@
   .rep-row { display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:0.5px solid rgba(255,255,255,0.07);font-size:12px; }
   .rep-row:last-child { border-bottom:none; }
 
-  .lb-grid { display:grid;grid-template-columns:22px 1fr 46px 46px 56px;gap:5px;align-items:center; }
+  .lb-grid { display:grid;grid-template-columns:22px 1fr 56px;gap:5px;align-items:center; }
   .lb-hdr  { font-size:9px;text-transform:uppercase;letter-spacing:0.07em;color:var(--dim);padding-bottom:5px;border-bottom:0.5px solid var(--border); }
   .lb-row  { padding:4px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);font-size:12px; }
   .lb-row:last-child { border-bottom:none; }
@@ -104,10 +104,10 @@
     background:var(--card);
     border:1px solid rgba(245,200,66,0.3);
     border-radius:16px;
-    padding:22px 36px;
+    padding:16px 36px;
     display:grid;
     grid-template-rows: auto auto auto;
-    gap:14px;
+    gap:8px;
     box-shadow:0 0 40px rgba(245,200,66,0.12);
     min-height:0;
     overflow:hidden;
@@ -122,7 +122,9 @@
   .weekly-lw-num { font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:0.9;color:rgba(255,255,255,0.45); }
   .weekly-track { width:100%;height:28px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden; }
   .weekly-fill  { height:100%;border-radius:20px;background:var(--gold);transition:width 0.8s ease; }
-  .weekly-bottom { display:flex;justify-content:space-between;font-size:40px;font-weight:500;color:var(--dim); }
+  .weekly-bottom { display:flex;justify-content:space-between;align-items:center; }
+  .weekly-pct { font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold); }
+  .weekly-edge { font-size:13px;color:var(--dim);font-weight:500; }
 
   /* Footer */
   .footer { display:flex;justify-content:space-between;align-items:center; }
@@ -224,8 +226,6 @@
       <div class="card-title"><div class="dot" style="background:var(--gold)"></div>Leaderboard — account owner</div>
       <div class="lb-grid lb-hdr">
         <div></div><div>Rep</div>
-        <div style="text-align:right">FT</div>
-        <div style="text-align:right">NJ</div>
         <div style="text-align:right">Calls</div>
       </div>
       <div id="lb-body" style="flex:1;overflow:hidden;"></div>
@@ -246,7 +246,9 @@
     </div>
     <div class="weekly-track"><div class="weekly-fill" id="wk-bar" style="width:0%"></div></div>
     <div class="weekly-bottom">
-      <span>0</span><span id="wk-pct">0% of weekly goal</span><span>400</span>
+      <span class="weekly-edge">0</span>
+      <span class="weekly-pct" id="wk-pct">0% of goal</span>
+      <span class="weekly-edge">400</span>
     </div>
   </div>
 
@@ -257,14 +259,12 @@
 </div>
 
 <script>
-// ── Clock ──
 function tick() {
   document.getElementById('clock').textContent =
     new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
 }
 tick(); setInterval(tick, 1000);
 
-// ── Countdowns ──
 const E5T = new Date('2026-07-15T00:00:00');
 const ENJ = new Date('2026-07-30T00:00:00');
 function fmtCd(target) {
@@ -283,7 +283,6 @@ function updateCd() {
 }
 updateCd(); setInterval(updateCd, 1000);
 
-// ── Ticker ──
 const msgs = [
   'every rsvp counts from here · dial · connect · secure the seat',
   'deal nj — together we rise · july 30 · let\'s fill the room',
@@ -323,12 +322,12 @@ function applyData(d) {
     ? rowsNj.map((r,i)=>`<div class="rep-row"><span>${medals[i]||'·'} ${r.name}</span><span style="color:var(--purple);font-weight:500;">${r.nj}</span></div>`).join('')
     : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">Someone make history today ⚡</div>`;
 
-  document.getElementById('lb-body').innerHTML = d.leaderboard.slice(0,12).map((r,i)=>`
+ // Sort by calls only for leaderboard
+  const bycalls = [...d.leaderboard].sort((a,b) => b.calls - a.calls);
+  document.getElementById('lb-body').innerHTML = bycalls.map((r,i)=>`
     <div class="lb-grid lb-row">
       <div class="lb-rank">${medals[i]||i+1}</div>
       <div class="lb-name">${r.name}</div>
-      <div class="lb-num" style="${r.ft>0?'color:var(--teal);font-weight:500':''}">${r.ft||'—'}</div>
-      <div class="lb-num" style="${r.nj>0?'color:var(--purple);font-weight:500':''}">${r.nj||'—'}</div>
       <div class="lb-num" style="${r.calls>0?'color:var(--gold);font-weight:500':''}">${r.calls||'—'}</div>
     </div>`).join('');
 
@@ -336,7 +335,7 @@ function applyData(d) {
   document.getElementById('lw-calls').textContent = d.calls_lw;
   const wkPct = Math.min(100, d.calls_wk_pct);
   document.getElementById('wk-bar').style.width = wkPct + '%';
-  document.getElementById('wk-pct').textContent = wkPct.toFixed(1) + '% of weekly goal';
+  document.getElementById('wk-pct').textContent = wkPct.toFixed(1) + '% of goal';
   document.getElementById('updated').textContent = 'Last updated: ' + d.updated;
 }
 
@@ -354,7 +353,6 @@ async function fetchData() {
 }
 fetchData(); setInterval(fetchData, 60000);
 
-// ── Sky ──
 const skyC=document.getElementById('sky');
 function drawSky(){
   skyC.width=window.innerWidth; skyC.height=window.innerHeight;
@@ -377,7 +375,6 @@ function drawSky(){
 }
 drawSky(); window.addEventListener('resize',drawSky);
 
-// ── Ocean ──
 const oc=document.getElementById('ocean'), octx=oc.getContext('2d');
 function resizeOc(){ oc.width=window.innerWidth; oc.height=window.innerHeight*0.3; }
 resizeOc(); window.addEventListener('resize',resizeOc);
@@ -410,7 +407,6 @@ function drawOcean(){
 }
 drawOcean();
 
-// ── Beach ──
 const bc=document.getElementById('beach');
 function drawBeach(){
   bc.width=window.innerWidth; bc.height=window.innerHeight*0.12;
@@ -429,7 +425,6 @@ function drawBeach(){
 }
 drawBeach(); window.addEventListener('resize',drawBeach);
 
-// ── Floating Hebrew + notes ──
 const heb=['א','ב','ג','ד','ה','ו','ז','ח','ט','י','כ','ל','מ','נ','ס','ע','פ','צ','ק','ר','ש','ת'];
 const notes=['♩','♪','♫','♬'];
 const syms=[...heb,...heb,...notes,...notes,...notes];
@@ -447,7 +442,6 @@ function spawnFloater(){
 }
 setInterval(spawnFloater,200);
 
-// ── BBQ smoke ──
 const bbqEl=document.getElementById('bbq-wrap');
 function spawnSmoke(){
   const rect=bbqEl.getBoundingClientRect();
