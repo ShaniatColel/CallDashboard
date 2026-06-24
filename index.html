@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRS Call Blitz 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Bebas+Neue&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal:#3DD9A4; --purple:#9B8FF5; --gold:#F5C842;
+    --card:rgba(10,15,35,0.55);
+    --border:rgba(255,255,255,0.15);
+    --muted:rgba(255,255,255,0.6);
+    --dim:rgba(255,255,255,0.35);
+  }
+  html,body { width:100%;height:100%;overflow:hidden;background:#0a1628;color:#fff;font-family:'Inter',sans-serif; }
+
+  #scene { position:fixed;inset:0;z-index:0;overflow:hidden; }
+  canvas#sky   { position:absolute;top:0;left:0;width:100%;height:100%; }
+  canvas#ocean { position:absolute;bottom:0;left:0;width:100%;height:42%; }
+  canvas#beach { position:absolute;bottom:0;left:0;width:100%;height:22%; }
+
+  .floater { position:fixed;pointer-events:none;user-select:none;animation:floatUp linear forwards;z-index:1; }
+  @keyframes floatUp {
+    0%  { transform:translateY(0) rotate(0deg); opacity:0; }
+    10% { opacity:1; }
+    90% { opacity:0.6; }
+    100%{ transform:translateY(-110px) rotate(18deg); opacity:0; }
+  }
+
+  #bbq-wrap { position:fixed;bottom:19%;right:5%;z-index:3;width:110px; }
+  #umbrella  { position:fixed;bottom:19%;left:5%;z-index:3;width:140px; }
+  .smoke-p { position:fixed;border-radius:50%;background:rgba(220,220,220,0.13);animation:smokeRise linear forwards;pointer-events:none;z-index:2; }
+  @keyframes smokeRise { 0%{transform:translateY(0) scale(1);opacity:0.3;} 100%{transform:translateY(-80px) scale(3);opacity:0;} }
+
+  /* בס"ד — top left, away from clock */
+  #bsd { position:fixed;top:14px;left:20px;font-size:15px;color:rgba(255,255,255,0.55);font-family:serif;z-index:20;letter-spacing:0.05em; }
+
+  /* ── UI layout ── */
+  #ui {
+    position:relative;z-index:10;height:100vh;
+    display:grid;
+    grid-template-rows: auto auto 1fr auto auto;
+    padding:14px 24px 10px;
+    gap:9px;
+  }
+
+  /* Header — clock on right, title centred */
+  .hdr { display:flex;justify-content:center;align-items:center;position:relative; }
+  .hdr-center { text-align:center; }
+  .hdr-center h1 { font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:0.08em;line-height:1;color:var(--teal); }
+  .hdr-center p  { font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:0.04em; }
+  #clock { position:absolute;right:0;top:0;font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:0.05em;color:rgba(255,255,255,0.7); }
+
+  /* Top stat strip */
+  .stat-strip { display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px; }
+  .stat { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:11px 16px; }
+  .stat-label { font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:4px;font-weight:500; }
+  .stat-val   { font-family:'Bebas Neue',sans-serif;font-size:46px;line-height:1; }
+  .stat-sub   { font-size:11px;color:var(--dim);margin-top:3px; }
+  .c-gold   { color:var(--gold); }
+  .c-teal   { color:var(--teal); }
+  .c-purple { color:var(--purple); }
+
+  /* countdown cards in stat strip */
+  .cd-card { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:11px 16px;display:flex;align-items:center;justify-content:space-between; }
+  .cd-label { font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);font-weight:500; }
+  .cd-date  { font-size:11px;color:var(--dim);margin-top:2px; }
+  .cd-time  { font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.04em; }
+
+  /* Main 3-col */
+  .main { display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:9px;min-height:0; }
+  .card {
+    background:var(--card);border:0.5px solid var(--border);border-radius:14px;
+    padding:14px 17px;display:flex;flex-direction:column;min-height:0;
+    backdrop-filter:blur(3px);
+  }
+  .card-title { font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:500; }
+  .dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+
+  .big-num { font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1; }
+
+  .goal-pill {
+    display:inline-block;font-size:13px;font-weight:500;
+    padding:4px 12px;border-radius:20px;margin-bottom:9px;
+    letter-spacing:0.03em;
+  }
+  .goal-pill-teal   { background:rgba(61,217,164,0.2);color:var(--teal);border:0.5px solid rgba(61,217,164,0.5); }
+  .goal-pill-purple { background:rgba(155,143,245,0.2);color:var(--purple);border:0.5px solid rgba(155,143,245,0.5); }
+
+  .prog-track { height:9px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;margin:7px 0 5px; }
+  .prog-fill  { height:100%;border-radius:20px;min-width:4px;transition:width 0.8s ease; }
+  .prog-labels{ display:flex;justify-content:space-between;font-size:11px;color:var(--dim); }
+
+  .rep-row { display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid rgba(255,255,255,0.08);font-size:13px; }
+  .rep-row:last-child { border-bottom:none; }
+
+  /* Leaderboard */
+  .lb-grid { display:grid;grid-template-columns:24px 1fr 50px 50px 62px;gap:6px;align-items:center; }
+  .lb-hdr  { font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--dim);padding-bottom:7px;border-bottom:0.5px solid var(--border); }
+  .lb-row  { padding:6px 0;border-bottom:0.5px solid rgba(255,255,255,0.06);font-size:13px; }
+  .lb-row:last-child { border-bottom:none; }
+  .lb-rank { text-align:center;font-size:14px;color:var(--dim); }
+  .lb-name { white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff; }
+  .lb-num  { text-align:right;font-variant-numeric:tabular-nums;color:var(--dim); }
+
+  /* Weekly meter */
+  .weekly-bar {
+    background:var(--card);border:0.5px solid var(--border);border-radius:12px;
+    padding:10px 18px;display:flex;align-items:center;gap:14px;
+  }
+  .weekly-label { font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);white-space:nowrap;flex-shrink:0;font-weight:500; }
+  .weekly-nums  { font-family:'Bebas Neue',sans-serif;font-size:24px;white-space:nowrap;flex-shrink:0; }
+  .weekly-track { flex:1;height:11px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden; }
+  .weekly-fill  { height:100%;border-radius:20px;background:var(--gold);transition:width 0.8s ease; }
+  .weekly-goal  { font-size:11px;color:var(--dim);white-space:nowrap;flex-shrink:0; }
+  .weekly-lw    { font-size:11px;color:var(--dim);white-space:nowrap;flex-shrink:0; }
+
+  /* Footer */
+  .footer { display:flex;justify-content:space-between;align-items:center; }
+  #updated { font-size:11px;color:var(--dim);font-style:italic; }
+  #ticker  { font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.05em;font-style:italic; }
+</style>
+</head>
+<body>
+
+<!-- בס"ד top LEFT to avoid clock overlap -->
+<div id="bsd">בס״ד</div>
+
+<div id="scene">
+  <canvas id="sky"></canvas>
+  <canvas id="ocean"></canvas>
+  <canvas id="beach"></canvas>
+  <svg id="umbrella" viewBox="0 0 130 160" xmlns="http://www.w3.org/2000/svg">
+    <line x1="65" y1="50" x2="72" y2="155" stroke="#c8a96e" stroke-width="4" stroke-linecap="round"/>
+    <path d="M10 55 Q65 0 120 55 Z" fill="#E84B4B"/>
+    <path d="M10 55 Q37 30 65 25 Q65 55 10 55 Z" fill="#E84B4B"/>
+    <path d="M120 55 Q93 30 65 25 Q65 55 120 55 Z" fill="#F5A623"/>
+    <path d="M10 55 Q37 42 65 40 Q65 55 10 55 Z" fill="rgba(255,255,255,0.15)"/>
+    <path d="M120 55 Q93 42 65 40 Q65 55 120 55 Z" fill="rgba(255,255,255,0.15)"/>
+    <path d="M10 55 Q20 68 30 56 Q40 68 50 56 Q58 68 65 56 Q72 68 80 56 Q90 68 100 56 Q110 68 120 55" fill="none" stroke="#F5A623" stroke-width="3"/>
+    <rect x="20" y="148" width="55" height="12" rx="3" fill="#3DD9A4" opacity="0.7"/>
+  </svg>
+  <svg id="bbq-wrap" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">
+    <line x1="28" y1="88" x2="16" y2="126" stroke="#7a6040" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="72" y1="88" x2="84" y2="126" stroke="#7a6040" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="28" y1="95" x2="50" y2="115" stroke="#6a5030" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="72" y1="95" x2="50" y2="115" stroke="#6a5030" stroke-width="2.5" stroke-linecap="round"/>
+    <ellipse cx="50" cy="75" rx="32" ry="15" fill="#2a2218" stroke="#5a4a30" stroke-width="1.5"/>
+    <path d="M18 75 Q18 100 50 100 Q82 100 82 75 Z" fill="#1e1a12" stroke="#5a4a30" stroke-width="1.5"/>
+    <ellipse cx="50" cy="75" rx="26" ry="11" fill="none" stroke="#4a3a20" stroke-width="1"/>
+    <line x1="24" y1="75" x2="76" y2="75" stroke="#4a3a20" stroke-width="0.8"/>
+    <line x1="36" y1="65" x2="36" y2="85" stroke="#4a3a20" stroke-width="0.8"/>
+    <line x1="50" y1="64" x2="50" y2="86" stroke="#4a3a20" stroke-width="0.8"/>
+    <line x1="64" y1="65" x2="64" y2="85" stroke="#4a3a20" stroke-width="0.8"/>
+    <ellipse cx="50" cy="91" rx="20" ry="6" fill="#a03000" opacity="0.8"/>
+    <ellipse cx="50" cy="91" rx="12" ry="3.5" fill="#ff6500" opacity="0.6"/>
+    <rect x="28" y="70" width="13" height="5" rx="2" fill="#7a2000" opacity="0.9"/>
+    <rect x="45" y="69" width="15" height="5" rx="2" fill="#6a1800" opacity="0.9"/>
+    <rect x="63" y="70" width="11" height="5" rx="2" fill="#7a2000" opacity="0.9"/>
+    <rect x="44" y="55" width="12" height="4" rx="2" fill="#888"/>
+    <path d="M18 75 Q18 50 50 50 Q82 50 82 75 Z" fill="#2a2218" stroke="#5a4a30" stroke-width="1.5"/>
+  </svg>
+</div>
+
+<div id="ui">
+  <!-- Header: בס"ד top-left (fixed), title center, clock right -->
+  <div class="hdr">
+    <div class="hdr-center">
+      <h1>DRS Call Blitz 2026</h1>
+      <p>Five Towns · Deal NJ — Together We Rise · live from Salesforce</p>
+    </div>
+    <div id="clock"></div>
+  </div>
+
+  <!-- Stat strip: calls + 2 countdowns -->
+  <div class="stat-strip">
+    <div class="stat">
+      <div class="stat-label">Calls today</div>
+      <div class="stat-val c-gold" id="s-calls">—</div>
+      <div class="stat-sub">DRS team (excl. Efraim)</div>
+    </div>
+    <div class="cd-card">
+      <div>
+        <div class="cd-label" style="color:var(--teal);">Five Towns 2026</div>
+        <div class="cd-date">Tuesday, July 15</div>
+      </div>
+      <div class="cd-time c-teal" id="cd-5t">—</div>
+    </div>
+    <div class="cd-card">
+      <div>
+        <div class="cd-label" style="color:var(--purple);">Deal NJ — Together We Rise</div>
+        <div class="cd-date">Wednesday, July 30</div>
+      </div>
+      <div class="cd-time c-purple" id="cd-nj">—</div>
+    </div>
+  </div>
+
+  <!-- Main panels -->
+  <div class="main">
+    <div class="card">
+      <div class="card-title"><div class="dot" style="background:var(--teal)"></div>5T26 — Five Towns 2026</div>
+      <div class="big-num c-teal" id="c-5t">—</div>
+      <div class="goal-pill goal-pill-teal" id="goal-5t-pill">Goal: 150 · 0% there</div>
+      <div class="prog-track"><div class="prog-fill" id="bar-5t" style="background:var(--teal);width:0%"></div></div>
+      <div class="prog-labels"><span>0</span><span id="pct-5t-lbl"></span><span>150</span></div>
+      <div style="margin-top:10px;flex:1;" id="rsvp-5t-rows"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="dot" style="background:var(--purple)"></div>NJ26 — Deal NJ 2026</div>
+      <div class="big-num c-purple" id="c-nj">—</div>
+      <div class="goal-pill goal-pill-purple" id="goal-nj-pill">Goal: 150 · 0% there</div>
+      <div class="prog-track"><div class="prog-fill" id="bar-nj" style="background:var(--purple);width:0%"></div></div>
+      <div class="prog-labels"><span>0</span><span id="pct-nj-lbl"></span><span>150</span></div>
+      <div style="margin-top:10px;flex:1;" id="rsvp-nj-rows"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="dot" style="background:var(--gold)"></div>Leaderboard — account owner</div>
+      <div class="lb-grid lb-hdr">
+        <div></div><div>Rep</div>
+        <div style="text-align:right">FT</div>
+        <div style="text-align:right">NJ</div>
+        <div style="text-align:right">Calls</div>
+      </div>
+      <div id="lb-body" style="flex:1;overflow:hidden;"></div>
+    </div>
+  </div>
+
+  <!-- Weekly meter -->
+  <div class="weekly-bar">
+    <div class="weekly-label">Weekly calls</div>
+    <div class="weekly-nums c-gold"><span id="wk-calls">—</span><span style="font-size:14px;color:var(--dim);"> / 400</span></div>
+    <div class="weekly-track"><div class="weekly-fill" id="wk-bar" style="width:0%"></div></div>
+    <div class="weekly-goal" id="wk-pct">0% of goal</div>
+    <div class="weekly-lw">Last week: <span id="lw-calls" style="color:rgba(255,255,255,0.6);">—</span></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div id="updated" style="font-size:11px;color:var(--dim);font-style:italic;">loading...</div>
+    <div id="ticker"></div>
+  </div>
+</div>
+
+<script>
+// ── Clock ──
+function tick() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+}
+tick(); setInterval(tick, 1000);
+
+// ── Countdowns ──
+const E5T = new Date('2026-07-15T00:00:00');
+const ENJ = new Date('2026-07-30T00:00:00');
+function fmtCd(target) {
+  const diff = target - new Date();
+  if (diff <= 0) return 'TODAY!';
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  if (d > 0) return `${d}D ${String(h).padStart(2,'0')}H ${String(m).padStart(2,'0')}M`;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function updateCd() {
+  document.getElementById('cd-5t').textContent = fmtCd(E5T);
+  document.getElementById('cd-nj').textContent = fmtCd(ENJ);
+}
+updateCd(); setInterval(updateCd, 1000);
+
+// ── Ticker ──
+const msgs = [
+  'every rsvp counts from here · dial · connect · secure the seat',
+  'deal nj — together we rise · july 30 · let\'s fill the room',
+  'five towns · july 15 · the clock is ticking',
+  'one more call could be the one that matters',
+  'incredible effort — keep pushing, team!',
+];
+let mi=0;
+const tickEl=document.getElementById('ticker');
+tickEl.textContent=msgs[0];
+setInterval(()=>{mi=(mi+1)%msgs.length;tickEl.textContent=msgs[mi];},5000);
+
+const medals=['🥇','🥈','🥉'];
+
+function applyData(d) {
+  document.getElementById('s-calls').textContent = d.calls_today;
+
+  const pct5 = Math.min(100, d.pct_5t);
+  document.getElementById('c-5t').textContent = d.total_5t;
+  document.getElementById('goal-5t-pill').textContent = `Goal: ${d.goal_5t} · ${pct5.toFixed(1)}% there`;
+  document.getElementById('bar-5t').style.width = Math.max(0.5, pct5) + '%';
+  document.getElementById('pct-5t-lbl').textContent = `${d.total_5t} secured`;
+
+  const rows5t = d.leaderboard.filter(r=>r.ft>0);
+  document.getElementById('rsvp-5t-rows').innerHTML = rows5t.length
+    ? rows5t.map((r,i)=>`<div class="rep-row"><span>${medals[i]||'·'} ${r.name}</span><span style="color:var(--teal);font-weight:500;">${r.ft}</span></div>`).join('')
+    : `<div style="font-size:13px;color:var(--dim);font-style:italic;padding-top:8px;">First RSVP up for grabs ⚡</div>`;
+
+  const pctN = Math.min(100, d.pct_nj);
+  document.getElementById('c-nj').textContent = d.total_nj;
+  document.getElementById('goal-nj-pill').textContent = `Goal: ${d.goal_nj} · ${pctN.toFixed(1)}% there`;
+  document.getElementById('bar-nj').style.width = Math.max(0, pctN) + '%';
+  document.getElementById('pct-nj-lbl').textContent = `${d.total_nj} secured`;
+
+  const rowsNj = d.leaderboard.filter(r=>r.nj>0);
+  document.getElementById('rsvp-nj-rows').innerHTML = rowsNj.length
+    ? rowsNj.map((r,i)=>`<div class="rep-row"><span>${medals[i]||'·'} ${r.name}</span><span style="color:var(--purple);font-weight:500;">${r.nj}</span></div>`).join('')
+    : `<div style="font-size:13px;color:var(--dim);font-style:italic;padding-top:8px;">Someone make history today ⚡</div>`;
+
+  document.getElementById('lb-body').innerHTML = d.leaderboard.slice(0,8).map((r,i)=>`
+    <div class="lb-grid lb-row">
+      <div class="lb-rank">${medals[i]||i+1}</div>
+      <div class="lb-name">${r.name}</div>
+      <div class="lb-num" style="${r.ft>0?'color:var(--teal);font-weight:500':''}">${r.ft||'—'}</div>
+      <div class="lb-num" style="${r.nj>0?'color:var(--purple);font-weight:500':''}">${r.nj||'—'}</div>
+      <div class="lb-num" style="${r.calls>0?'color:var(--gold);font-weight:500':''}">${r.calls||'—'}</div>
+    </div>`).join('');
+
+  document.getElementById('wk-calls').textContent = d.calls_week;
+  document.getElementById('lw-calls').textContent = d.calls_lw;
+  const wkPct = Math.min(100, d.calls_wk_pct);
+  document.getElementById('wk-bar').style.width = wkPct + '%';
+  document.getElementById('wk-pct').textContent = wkPct.toFixed(1) + '% of goal';
+
+  document.getElementById('updated').textContent = 'Last updated: ' + d.updated;
+}
+
+async function fetchData() {
+  try {
+    const DATA_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+    const res = await fetch(DATA_URL + '?t=' + Date.now());
+    if (!res.ok) throw new Error();
+    const d = await res.json();
+    if (d && d.updated) applyData(d);
+  } catch(e) {
+    document.getElementById('updated').textContent = 'Waiting for data server...';
+  }
+}
+fetchData(); setInterval(fetchData, 60000);
+
+// ── Sky ──
+const skyC=document.getElementById('sky');
+function drawSky(){
+  skyC.width=window.innerWidth; skyC.height=window.innerHeight;
+  const ctx=skyC.getContext('2d');
+  const g=ctx.createLinearGradient(0,0,0,skyC.height);
+  g.addColorStop(0,'#0a0f2e'); g.addColorStop(0.35,'#1a2a5e');
+  g.addColorStop(0.6,'#e87d3e'); g.addColorStop(0.75,'#f5a44a');
+  g.addColorStop(0.85,'#fcd090'); g.addColorStop(1,'#f9e4b7');
+  ctx.fillStyle=g; ctx.fillRect(0,0,skyC.width,skyC.height);
+  for(let i=0;i<120;i++){
+    const x=Math.random()*skyC.width, y=Math.random()*skyC.height*0.42;
+    const r=Math.random()*1.1+0.2, a=Math.random()*0.65+0.2;
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${a})`; ctx.fill();
+  }
+  // moon — far right, well clear of cards
+  ctx.beginPath(); ctx.arc(skyC.width*0.93, skyC.height*0.1, 26, 0, Math.PI*2);
+  ctx.fillStyle='rgba(255,245,200,0.9)'; ctx.fill();
+  ctx.beginPath(); ctx.arc(skyC.width*0.93+9, skyC.height*0.1-5, 22, 0, Math.PI*2);
+  ctx.fillStyle='#1a2a5e'; ctx.fill();
+}
+drawSky(); window.addEventListener('resize',drawSky);
+
+// ── Ocean ──
+const oc=document.getElementById('ocean'), octx=oc.getContext('2d');
+function resizeOc(){ oc.width=window.innerWidth; oc.height=window.innerHeight*0.42; }
+resizeOc(); window.addEventListener('resize',resizeOc);
+let wt=0;
+const wl=[
+  {amp:20,freq:0.011,spd:0.016,yBase:0.18,color:'rgba(30,100,160,0.5)'},
+  {amp:14,freq:0.017,spd:0.024,yBase:0.35,color:'rgba(20,80,130,0.62)'},
+  {amp:9, freq:0.024,spd:0.034,yBase:0.52,color:'rgba(14,60,110,0.74)'},
+  {amp:6, freq:0.034,spd:0.048,yBase:0.68,color:'rgba(10,45,90,0.86)'},
+];
+function drawOcean(){
+  const w=oc.width, h=oc.height; octx.clearRect(0,0,w,h);
+  wl.forEach(l=>{
+    octx.beginPath();
+    for(let x=0;x<=w;x+=3){
+      const y=l.yBase*h+Math.sin(x*l.freq+wt*l.spd*60)*l.amp+Math.sin(x*l.freq*1.8+wt*l.spd*38)*(l.amp*0.4);
+      x===0?octx.moveTo(x,y):octx.lineTo(x,y);
+    }
+    octx.lineTo(w,h); octx.lineTo(0,h); octx.closePath();
+    octx.fillStyle=l.color; octx.fill();
+  });
+  octx.beginPath();
+  const fl=wl[0];
+  for(let x=0;x<=w;x+=3){
+    const y=fl.yBase*h+Math.sin(x*fl.freq+wt*fl.spd*60)*fl.amp+Math.sin(x*fl.freq*1.8+wt*fl.spd*38)*(fl.amp*0.4);
+    x===0?octx.moveTo(x,y-2):octx.lineTo(x,y-2);
+  }
+  octx.strokeStyle='rgba(255,255,255,0.2)'; octx.lineWidth=2.5; octx.stroke();
+  wt+=0.016; requestAnimationFrame(drawOcean);
+}
+drawOcean();
+
+// ── Beach ──
+const bc=document.getElementById('beach');
+function drawBeach(){
+  bc.width=window.innerWidth; bc.height=window.innerHeight*0.22;
+  const ctx=bc.getContext('2d');
+  const g=ctx.createLinearGradient(0,0,0,bc.height);
+  g.addColorStop(0,'rgba(240,210,140,0.95)'); g.addColorStop(1,'rgba(210,175,100,1)');
+  ctx.fillStyle=g;
+  ctx.beginPath(); ctx.moveTo(0,bc.height*0.15);
+  for(let x=0;x<=bc.width;x+=4) ctx.lineTo(x,bc.height*0.15+Math.sin(x*0.02)*6);
+  ctx.lineTo(bc.width,bc.height); ctx.lineTo(0,bc.height); ctx.closePath(); ctx.fill();
+  for(let i=0;i<18;i++){
+    const sx=Math.random()*bc.width, sy=bc.height*0.3+Math.random()*bc.height*0.55;
+    ctx.beginPath(); ctx.ellipse(sx,sy,4,2.5,Math.random()*Math.PI,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,235,200,${0.5+Math.random()*0.4})`; ctx.fill();
+  }
+}
+drawBeach(); window.addEventListener('resize',drawBeach);
+
+// ── Floating Hebrew + notes ──
+const heb=['א','ב','ג','ד','ה','ו','ז','ח','ט','י','כ','ל','מ','נ','ס','ע','פ','צ','ק','ר','ש','ת'];
+const notes=['♩','♪','♫','♬'];
+const syms=[...heb,...heb,...notes,...notes,...notes];
+const cols=['rgba(61,217,164,0.55)','rgba(61,217,164,0.35)','rgba(155,143,245,0.5)','rgba(155,143,245,0.3)','rgba(245,200,66,0.5)','rgba(245,200,66,0.3)'];
+function spawnFloater(){
+  const el=document.createElement('div'); el.className='floater';
+  const sym=syms[Math.floor(Math.random()*syms.length)];
+  const isH=heb.includes(sym);
+  const sz=isH?(16+Math.random()*18):(14+Math.random()*20);
+  const color=cols[Math.floor(Math.random()*cols.length)];
+  const x=5+Math.random()*90, y=20+Math.random()*65, dur=4+Math.random()*5;
+  el.textContent=sym;
+  el.style.cssText=`left:${x}vw;top:${y}vh;font-size:${sz}px;color:${color};font-family:${isH?'serif':'sans-serif'};animation-duration:${dur}s;`;
+  document.body.appendChild(el); setTimeout(()=>el.remove(),dur*1000);
+}
+setInterval(spawnFloater,650);
+
+// ── BBQ smoke ──
+const bbqEl=document.getElementById('bbq-wrap');
+function spawnSmoke(){
+  const rect=bbqEl.getBoundingClientRect();
+  const s=document.createElement('div'); s.className='smoke-p';
+  const sz=8+Math.random()*10;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${rect.left+rect.width*0.48+(Math.random()-.5)*14}px;top:${rect.top-4}px;animation-duration:${1.6+Math.random()*1.2}s;`;
+  document.body.appendChild(s); setTimeout(()=>s.remove(),2800);
+}
+setInterval(spawnSmoke,450);
+</script>
+</body>
+</html>
