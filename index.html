@@ -332,7 +332,7 @@ function applyData(d) {
 
 async function fetchData() {
   try {
-    const DATA_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+    const DATA_URL = 'https://script.googleusercontent.com/a/macros/colelchabad.org/echo?user_content_key=AUkAhnS51QUCd9ocZDUn7Q20030QX23Uxn7sJY8zcr7QjSBUGpJ_pBk_UlkXZYJ6zcJApMleEgQPeWoeQPyU2sLDe59kVo7gCl1B4NTioYcisLshrkMSCOACGtATdJ8asTWprfo73YIaq0hVUmFgmH3flTb1JuvdCyFNxWE23I9QDvA5dpS66PQJHm_dlWvMyCpGSti73dMGzU9qQFCFaJqHhO7mj_8fyl-UU4ZhULwFW72VTfUMvURnKftJ3xYfpx_VJ1ZuGXrhfOkYp2RvNYr4_QjrHMs838ab3YfYHGQ5YFNMyaIiED0&lib=MbTwWJmBPhZDyX5vnpgFXbL7h15HSbFpq';
     const res = await fetch(DATA_URL + '?t=' + Date.now());
     if (!res.ok) throw new Error();
     const d = await res.json();
