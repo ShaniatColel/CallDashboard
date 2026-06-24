@@ -54,16 +54,16 @@
 
   /* Top stat strip */
   .stat-strip { display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px; }
-  .stat { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:6px 14px; }
+  .stat { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:6px 14px;overflow:hidden; }
   .stat-label { font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:3px;font-weight:600; }
   .stat-val   { font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:1; }
   .stat-sub   { font-size:11px;color:var(--dim);margin-top:2px; }
   .c-gold{color:var(--gold);} .c-teal{color:var(--teal);} .c-purple{color:var(--purple);}
 
-  .cd-card { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between; }
+  .cd-card { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:6px 14px;display:flex;align-items:center;justify-content:space-between;overflow:hidden; }
   .cd-label { font-size:13px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);font-weight:600; }
   .cd-date  { font-size:11px;color:var(--dim);margin-top:2px; }
-  .cd-time  { font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:0.04em; }
+  .cd-time  { font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:0.04em; }
 
   /* Main 3-col */
   .main { display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:8px;min-height:0; }
