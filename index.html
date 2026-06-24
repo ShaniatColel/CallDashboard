@@ -18,8 +18,8 @@
 
   #scene { position:fixed;inset:0;z-index:0;overflow:hidden; }
   canvas#sky   { position:absolute;top:0;left:0;width:100%;height:100%; }
-  canvas#ocean { position:absolute;bottom:0;left:0;width:100%;height:42%; }
-  canvas#beach { position:absolute;bottom:0;left:0;width:100%;height:22%; }
+  canvas#ocean { position:absolute;bottom:0;left:0;width:100%;height:30%; }
+  canvas#beach { position:absolute;bottom:0;left:0;width:100%;height:12%; }
 
   .floater { position:fixed;pointer-events:none;user-select:none;animation:floatUp linear forwards;z-index:1; }
   @keyframes floatUp {
@@ -41,7 +41,7 @@
   #ui {
     position:relative;z-index:10;height:100vh;
     display:grid;
-    grid-template-rows: auto auto 1fr 140px auto;
+    grid-template-rows: auto auto 1fr 100px auto;
     padding:14px 24px 10px;
     gap:9px;
   }
@@ -108,13 +108,13 @@
   /* Weekly meter */
   .weekly-bar {
     background:var(--card);border:1px solid var(--border);border-radius:14px;
-    padding:28px 36px;display:grid;
+    padding:12px 28px;display:grid;
     grid-template-rows: auto auto auto;
     gap:12px; box-shadow: 0 0 30px rgba(245,200,66,.15);
   }
   .weekly-top { display:flex;justify-content:space-between;align-items:flex-end; }
   .weekly-label { font-size:18px;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);font-weight:600;margin-bottom:4px; }
-  .weekly-nums  { font-family:'Bebas Neue',sans-serif;font-size:90px;line-height:1;color:var(--gold); }
+  .weekly-nums  { font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1;color:var(--gold); }
   .weekly-nums span.goal { font-size:28px;color:var(--dim); }
   .weekly-lw-block { text-align:right; }
   .weekly-lw-label { font-size:16px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px; }
