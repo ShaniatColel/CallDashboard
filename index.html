@@ -306,7 +306,7 @@ function applyData(d) {
   document.getElementById('bar-5t').style.width = Math.max(0.5, pct5) + '%';
   document.getElementById('pct-5t-lbl').textContent = `${d.total_5t} secured`;
 
-  const rows5t = d.leaderboard.filter(r=>r.ft>0);
+ const rows5t = [...d.leaderboard].filter(r=>r.ft>0).sort((a,b)=>b.ft-a.ft);
   document.getElementById('rsvp-5t-rows').innerHTML = rows5t.length
     ? rows5t.map((r,i)=>`<div class="rep-row"><span>${medals[i]||'·'} ${r.name}</span><span style="color:var(--teal);font-weight:500;">${r.ft}</span></div>`).join('')
     : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">First RSVP up for grabs ⚡</div>`;
@@ -317,7 +317,7 @@ function applyData(d) {
   document.getElementById('bar-nj').style.width = Math.max(0, pctN) + '%';
   document.getElementById('pct-nj-lbl').textContent = `${d.total_nj} secured`;
 
-  const rowsNj = d.leaderboard.filter(r=>r.nj>0);
+const rowsNj = [...d.leaderboard].filter(r=>r.nj>0).sort((a,b)=>b.nj-a.nj);
   document.getElementById('rsvp-nj-rows').innerHTML = rowsNj.length
     ? rowsNj.map((r,i)=>`<div class="rep-row"><span>${medals[i]||'·'} ${r.name}</span><span style="color:var(--purple);font-weight:500;">${r.nj}</span></div>`).join('')
     : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">Someone make history today ⚡</div>`;
