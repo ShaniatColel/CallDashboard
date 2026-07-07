@@ -324,8 +324,7 @@ function applyData(d) {
 
  // Sort by calls only for leaderboard
  const excluded = ['Unowned', 'Efraim Duchman', 'Rabbi Sholom Duchman'];
-  const bycalls = [...d.leaderboard].filter(r => !excluded.includes(r.name)).sort((a,b) => b.calls - a.calls);
-  document.getElementById('lb-body').innerHTML = bycalls.map((r,i)=>`
+  const bycalls = [...d.leaderboard].filter(r => !excluded.includes(r.name)).sort((a,b) => (b.ft+b.nj) - (a.ft+a.nj) || b.calls - a.calls);  document.getElementById('lb-body').innerHTML = bycalls.map((r,i)=>`
     <div class="lb-grid lb-row">
       <div class="lb-rank">${medals[i]||i+1}</div>
       <div class="lb-name">${r.name}</div>
