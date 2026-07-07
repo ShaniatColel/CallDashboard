@@ -323,8 +323,9 @@ const rowsNj = [...d.leaderboard].filter(r=>r.nj>0).sort((a,b)=>b.nj-a.nj);
     : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">Someone make history today ⚡</div>`;
 
  // Sort by calls only for leaderboard
- const excluded = ['Unowned', 'Efraim Duchman', 'Rabbi Sholom Duchman'];
-  const bycalls = [...d.leaderboard].filter(r => !excluded.includes(r.name)).sort((a,b) => (b.ft+b.nj) - (a.ft+a.nj) || b.calls - a.calls);  document.getElementById('lb-body').innerHTML = bycalls.map((r,i)=>`
+const callTeam = ['Aaron Flajsing','Chaya Steinmetz','Chumi Nelson','Daniel Sherman','Polina Freydin','Raizel Lazaroff','Shani Spielman'];
+  const bycalls = [...d.leaderboard].filter(r => callTeam.includes(r.name)).sort((a,b) => b.calls - a.calls);
+  document.getElementById('lb-body').innerHTML = bycalls.map((r,i)=>`
     <div class="lb-grid lb-row">
       <div class="lb-rank">${medals[i]||i+1}</div>
       <div class="lb-name">${r.name}</div>
