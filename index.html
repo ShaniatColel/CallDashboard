@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DRS Call Blitz 2026</title>
+<title>DRS Call Blitz 2026 — Deal NJ</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Bebas+Neue&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,7 +40,7 @@
   #ui {
     position:relative;z-index:10;height:100vh;
     display:grid;
-    grid-template-rows: auto 100px 1fr 260px auto;
+    grid-template-rows: auto 110px 1fr 260px auto;
     padding:12px 22px 8px;
     gap:12px;
   }
@@ -48,47 +48,50 @@
   /* Header */
   .hdr { display:flex;justify-content:center;align-items:center;position:relative; }
   .hdr-center { text-align:center; }
-  .hdr-center h1 { font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:0.08em;line-height:1;color:var(--teal); }
+  .hdr-center h1 { font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:0.08em;line-height:1;color:var(--purple); }
   .hdr-center p  { font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:0.04em; }
   #clock { position:absolute;right:0;top:0;font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:0.05em;color:rgba(255,255,255,0.7);margin-right:80px; }
 
   /* Top stat strip */
-  .stat-strip { display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;overflow:hidden; }
+  .stat-strip { display:grid;grid-template-columns:1fr 2fr;gap:8px;overflow:hidden; }
   .stat { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:6px 14px;overflow:hidden; }
   .stat-label { font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:3px;font-weight:600; }
-  .stat-val   { font-family:'Bebas Neue',sans-serif;font-size:60px;line-height:1; }
+  .stat-val   { font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:1; }
   .stat-sub   { font-size:11px;color:var(--dim);margin-top:2px; }
   .c-gold{color:var(--gold);} .c-teal{color:var(--teal);} .c-purple{color:var(--purple);}
 
-  .cd-card { background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:6px 14px;display:flex;align-items:center;justify-content:space-between;overflow:hidden; }
-  .cd-label { font-size:13px;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);font-weight:600; }
-  .cd-date  { font-size:11px;color:var(--dim);margin-top:2px; }
-  .cd-time  { font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:0.04em; }
+  .cd-card {
+    background:var(--card);border:1px solid rgba(155,143,245,0.4);border-radius:12px;
+    padding:6px 24px;display:flex;align-items:center;justify-content:space-between;overflow:hidden;
+    box-shadow:0 0 30px rgba(155,143,245,0.12);
+  }
+  .cd-label { font-size:16px;text-transform:uppercase;letter-spacing:0.07em;color:var(--purple);font-weight:600; }
+  .cd-date  { font-size:12px;color:var(--dim);margin-top:2px; }
+  .cd-time  { font-family:'Bebas Neue',sans-serif;font-size:60px;letter-spacing:0.04em; }
 
-  /* Main 3-col */
-  .main { display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:8px;min-height:0;overflow:hidden; }
+  /* Main 2-col */
+  .main { display:grid;grid-template-columns:1.3fr 1fr;gap:8px;min-height:0;overflow:hidden; }
   .card {
     background:var(--card);border:0.5px solid var(--border);border-radius:14px;
-    padding:12px 15px;display:flex;flex-direction:column;min-height:0;
+    padding:12px 18px;display:flex;flex-direction:column;min-height:0;
     backdrop-filter:blur(3px);
   }
-  .card-title { font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px;font-weight:500; }
+  .card-title { font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px;font-weight:500; }
   .dot { width:7px;height:7px;border-radius:50%;flex-shrink:0; }
-  .big-num { font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:1; }
+  .big-num { font-family:'Bebas Neue',sans-serif;font-size:96px;line-height:1; }
 
   .goal-pill {
-    display:inline-block;font-size:12px;font-weight:500;
-    padding:3px 10px;border-radius:20px;margin-bottom:7px;
+    display:inline-block;font-size:13px;font-weight:500;
+    padding:3px 12px;border-radius:20px;margin-bottom:7px;
     letter-spacing:0.03em;
   }
-  .goal-pill-teal   { background:rgba(61,217,164,0.2);color:var(--teal);border:0.5px solid rgba(61,217,164,0.5); }
   .goal-pill-purple { background:rgba(155,143,245,0.2);color:var(--purple);border:0.5px solid rgba(155,143,245,0.5); }
 
-  .prog-track { height:7px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;margin:5px 0 4px; }
+  .prog-track { height:9px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;margin:5px 0 4px; }
   .prog-fill  { height:100%;border-radius:20px;min-width:4px;transition:width 0.8s ease; }
   .prog-labels{ display:flex;justify-content:space-between;font-size:10px;color:var(--dim); }
 
-  .rep-row { display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:0.5px solid rgba(255,255,255,0.07);font-size:12px; }
+  .rep-row { display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:0.5px solid rgba(255,255,255,0.07);font-size:13px; }
   .rep-row:last-child { border-bottom:none; }
 
   .lb-grid { display:grid;grid-template-columns:22px 1fr 56px;gap:5px;align-items:center; }
@@ -175,8 +178,8 @@
 <div id="ui">
   <div class="hdr">
     <div class="hdr-center">
-      <h1>DRS Call Blitz 2026</h1>
-      <p>Five Towns · Deal NJ — Together We Rise · live from Salesforce</p>
+      <h1>DRS Call Blitz 2026 — Deal NJ</h1>
+      <p>Together We Rise · Wednesday, July 30 · colelchabad.events · live from Salesforce</p>
     </div>
     <div id="clock"></div>
   </div>
@@ -189,15 +192,8 @@
     </div>
     <div class="cd-card">
       <div>
-        <div class="cd-label" style="color:var(--teal);">Five Towns 2026</div>
-        <div class="cd-date">Tuesday, July 15</div>
-      </div>
-      <div class="cd-time c-teal" id="cd-5t">—</div>
-    </div>
-    <div class="cd-card">
-      <div>
-        <div class="cd-label" style="color:var(--purple);">Deal NJ — Together We Rise</div>
-        <div class="cd-date">Wednesday, July 30</div>
+        <div class="cd-label">Deal NJ — Together We Rise</div>
+        <div class="cd-date">Wednesday, July 30 · colelchabad.events</div>
       </div>
       <div class="cd-time c-purple" id="cd-nj">—</div>
     </div>
@@ -205,16 +201,7 @@
 
   <div class="main">
     <div class="card">
-      <div class="card-title"><div class="dot" style="background:var(--teal)"></div>5T26 — Five Towns 2026</div>
-      <div class="big-num c-teal" id="c-5t">—</div>
-      <div class="goal-pill goal-pill-teal" id="goal-5t-pill">Goal: 150 · 0% there</div>
-      <div class="prog-track"><div class="prog-fill" id="bar-5t" style="background:var(--teal);width:0%"></div></div>
-      <div class="prog-labels"><span>0</span><span id="pct-5t-lbl"></span><span>150</span></div>
-      <div style="margin-top:8px;flex:1;" id="rsvp-5t-rows"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><div class="dot" style="background:var(--purple)"></div>NJ26 — Deal NJ 2026</div>
+      <div class="card-title"><div class="dot" style="background:var(--purple)"></div>NJ26 — Deal NJ 2026 · RSVPs secured</div>
       <div class="big-num c-purple" id="c-nj">—</div>
       <div class="goal-pill goal-pill-purple" id="goal-nj-pill">Goal: 150 · 0% there</div>
       <div class="prog-track"><div class="prog-fill" id="bar-nj" style="background:var(--purple);width:0%"></div></div>
@@ -265,7 +252,6 @@ function tick() {
 }
 tick(); setInterval(tick, 1000);
 
-const E5T = new Date('2026-07-15T00:00:00');
 const ENJ = new Date('2026-07-30T00:00:00');
 function fmtCd(target) {
   const diff = target - new Date();
@@ -278,16 +264,16 @@ function fmtCd(target) {
   return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 function updateCd() {
-  document.getElementById('cd-5t').textContent = fmtCd(E5T);
   document.getElementById('cd-nj').textContent = fmtCd(ENJ);
 }
 updateCd(); setInterval(updateCd, 1000);
 
 const msgs = [
-  'every rsvp counts from here · dial · connect · secure the seat',
   'deal nj — together we rise · july 30 · let\'s fill the room',
-  'five towns · july 15 · the clock is ticking',
+  'tickets live at colelchabad.events · every rsvp counts',
   'one more call could be the one that matters',
+  'together we rise — dial · connect · secure the seat',
+  'corporate sponsors are in · now let\'s bring the crowd',
   'incredible effort — keep pushing, team!',
 ];
 let mi=0;
@@ -300,30 +286,19 @@ const medals=['🥇','🥈','🥉'];
 function applyData(d) {
   document.getElementById('s-calls').textContent = d.calls_today;
 
-  const pct5 = Math.min(100, d.pct_5t);
-  document.getElementById('c-5t').textContent = d.total_5t;
-  document.getElementById('goal-5t-pill').textContent = `Goal: ${d.goal_5t} · ${pct5.toFixed(1)}% there`;
-  document.getElementById('bar-5t').style.width = Math.max(0.5, pct5) + '%';
-  document.getElementById('pct-5t-lbl').textContent = `${d.total_5t} secured`;
-
- const rows5t = [...d.leaderboard].filter(r=>r.ft>0).sort((a,b)=>b.ft-a.ft);
-  document.getElementById('rsvp-5t-rows').innerHTML = rows5t.length
-    ? rows5t.map((r,i)=>`<div class="rep-row"><span>${medals[i]||'·'} ${r.name}</span><span style="color:var(--teal);font-weight:500;">${r.ft}</span></div>`).join('')
-    : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">First RSVP up for grabs ⚡</div>`;
-
   const pctN = Math.min(100, d.pct_nj);
   document.getElementById('c-nj').textContent = d.total_nj;
   document.getElementById('goal-nj-pill').textContent = `Goal: ${d.goal_nj} · ${pctN.toFixed(1)}% there`;
-  document.getElementById('bar-nj').style.width = Math.max(0, pctN) + '%';
+  document.getElementById('bar-nj').style.width = Math.max(0.5, pctN) + '%';
   document.getElementById('pct-nj-lbl').textContent = `${d.total_nj} secured`;
 
-const rowsNj = [...d.leaderboard].filter(r=>r.nj>0).sort((a,b)=>b.nj-a.nj);
+  const rowsNj = [...d.leaderboard].filter(r=>r.nj>0).sort((a,b)=>b.nj-a.nj);
   document.getElementById('rsvp-nj-rows').innerHTML = rowsNj.length
     ? rowsNj.map((r,i)=>`<div class="rep-row"><span>${medals[i]||'·'} ${r.name}</span><span style="color:var(--purple);font-weight:500;">${r.nj}</span></div>`).join('')
-    : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">Someone make history today ⚡</div>`;
+    : `<div style="font-size:12px;color:var(--dim);font-style:italic;padding-top:6px;">First RSVP up for grabs ⚡</div>`;
 
- // Sort by calls only for leaderboard
-const callTeam = ['Aaron Flajsing','Chaya Steinmetz','Chumi Nelson','Daniel Sherman','Polina Freydin','Raizel Lazaroff','Shani Spielman'];
+  // Sort by calls only for leaderboard
+  const callTeam = ['Aaron Flajsing','Chaya Steinmetz','Chumi Nelson','Daniel Sherman','Polina Freydin','Raizel Lazaroff','Shani Spielman'];
   const bycalls = [...d.leaderboard].filter(r => callTeam.includes(r.name)).sort((a,b) => b.calls - a.calls);
   document.getElementById('lb-body').innerHTML = bycalls.map((r,i)=>`
     <div class="lb-grid lb-row">
