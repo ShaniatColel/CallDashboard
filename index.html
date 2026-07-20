@@ -315,13 +315,12 @@ function applyData(d) {
   document.getElementById('updated').textContent = 'Last updated: ' + d.updated;
 }
 
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRGoEcbBe8s8kjnBz_naT72wPXnWt6AaExbFeQvuNUTVTwbpW-Aedk8paw_90YtZqe-LZmXmQHFmSY/pub?output=csv';
+const DATA_URL = 'https://script.google.com/macros/s/AKfycbxUlp3xZbrgrZ48mAbsj2G6N26IofP8tZNfWT8wjvF1WnxuGTO_fK2Ly4dbbYH3QR5kqA/exec';
 
 async function fetchData() {
   try {
-    const res = await fetch(SHEET_URL + '&t=' + Date.now());
-    const text = await res.text();
-    const d = JSON.parse(text.split('\n')[0].replace(/^"|"$/g, '').replace(/""/g, '"'));
+    const res = await fetch(DATA_URL + '?t=' + Date.now());
+    const d = await res.json();
     if (d && d.updated) applyData(d);
   } catch(e) {
     document.getElementById('updated').textContent = 'Connection error — retrying...';
